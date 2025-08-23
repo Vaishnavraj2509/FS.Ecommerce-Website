@@ -1,9 +1,14 @@
-package Model;
+package com.SSS.Ecommerce.model;
 
 public class Size {
 
     private String name;
     private int quantity;
+
+    public Size(){
+
+
+    }
 
     public String getName(){
         return name;

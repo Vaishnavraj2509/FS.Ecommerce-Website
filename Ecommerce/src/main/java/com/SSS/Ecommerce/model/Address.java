@@ -1,4 +1,4 @@
-package Model;
+package com.SSS.Ecommerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

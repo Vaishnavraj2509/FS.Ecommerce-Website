@@ -1,7 +1,6 @@
-package Model;
+package com.SSS.Ecommerce.model;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 
 
 public class PaymentInformation {
