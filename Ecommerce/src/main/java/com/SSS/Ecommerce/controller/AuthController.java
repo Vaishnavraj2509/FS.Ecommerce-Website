@@ -60,7 +60,9 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtProvider.generateToken(authentication); // DEBUG BREAKPOINT 4: Inspect token generation
-        AuthResponse authResponse = new AuthResponse(token, "Signup success");
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setJwt(token);
+        authResponse.setMessage("Signup Success");
 
         return new ResponseEntity<>(authResponse, HttpStatus.CREATED); // DEBUG BREAKPOINT 5: Inspect final response
     }
@@ -74,8 +76,9 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtProvider.generateToken(authentication); // DEBUG BREAKPOINT 9: Inspect token generation
-        AuthResponse authResponse = new AuthResponse(token, "Signin success");
-
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setJwt(token);
+        authResponse.setMessage("Signin Success");
         return new ResponseEntity<>(authResponse, HttpStatus.CREATED); // DEBUG BREAKPOINT 10: Inspect final response
     }
 

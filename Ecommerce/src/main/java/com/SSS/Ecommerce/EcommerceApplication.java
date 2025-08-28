@@ -7,8 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages = {
 		"com.SSS.Ecommerce",
-		"service",  // Your current service package
-		"com/SSS/Ecommerce/repository" // If your UserRepo is here
+		"resources"
 })
 public class EcommerceApplication {
 	public static void main(String[] args) {
