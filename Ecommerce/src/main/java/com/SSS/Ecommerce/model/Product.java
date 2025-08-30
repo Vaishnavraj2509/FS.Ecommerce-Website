@@ -1,7 +1,7 @@
 package com.SSS.Ecommerce.model;
 
 import jakarta.persistence.*;
-
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -18,24 +18,20 @@ public class Product {
     @Column(name = "title")
     private String title;
 
-
     @Column(name = "description")
     private String description;
 
+    @Column(name = "price", precision = 10, scale = 2)
+    private BigDecimal price;
 
-    @Column(name = "price")
-    private String price;
+    @Column(name = "discounted_price", precision = 10, scale = 2)
+    private BigDecimal discountedPrice;
 
-
-    @Column(name = "discounted_price")
-    private String discounted_price;
-
-
-    @Column(name = "discounted_present")
-    private String discounted_present;
+    @Column(name = "discount_percent", precision = 5, scale = 2)
+    private BigDecimal discountPresent;
 
     @Column(name = "quantity")
-    private String quantity;
+    private int quantity;
 
     @Column(name = "brand")
     private String brand;
@@ -46,39 +42,35 @@ public class Product {
     @Embedded
     @ElementCollection
     @Column(name = "sizes")
-
     private Set<Size> sizes = new HashSet<>();
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rating> ratings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
     @Column(name = "num_ratings")
     private int numRatings;
 
     @ManyToOne
-    @JoinColumn(name="category_id")
+    @JoinColumn(name = "category_id")
     private Category category;
 
     private LocalDateTime createdAt;
 
-    public Product(){
+    public Product() {}
 
-
-    }
-
-    public Product(Long id, String title, String description, String price, String discounted_price, String discounted_present, String quantity, String brand, String color, Set<Size> sizes, String imageUrl, List<Rating> ratings, List<Review> reviews, int numRatings, Category category, LocalDateTime createdAt) {
+    public Product(Long id, String title, String description, BigDecimal price, BigDecimal discountedPrice, BigDecimal discountPresent, int quantity, String brand, String color, Set<Size> sizes, String imageUrl, List<Rating> ratings, List<Review> reviews, int numRatings, Category category, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.price = price;
-        this.discounted_price = discounted_price;
-        this.discounted_present = discounted_present;
+        this.discountedPrice = discountedPrice;
+        this.discountPresent = discountPresent;
         this.quantity = quantity;
         this.brand = brand;
         this.color = color;
@@ -115,35 +107,35 @@ public class Product {
         this.description = description;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public String getDiscounted_price() {
-        return discounted_price;
+    public BigDecimal getDiscountedPrice() {
+        return discountedPrice;
     }
 
-    public void setDiscounted_price(String discounted_price) {
-        this.discounted_price = discounted_price;
+    public void setDiscountedPrice(BigDecimal discountedPrice) {
+        this.discountedPrice = discountedPrice;
     }
 
-    public String getDiscounted_present() {
-        return discounted_present;
+    public BigDecimal getDiscountPresent() {
+        return discountPresent;
     }
 
-    public void setDiscounted_present(String discounted_present) {
-        this.discounted_present = discounted_present;
+    public void setDiscountPresent(BigDecimal discountPresent) {
+        this.discountPresent = discountPresent;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
@@ -218,4 +210,6 @@ public class Product {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+
 }

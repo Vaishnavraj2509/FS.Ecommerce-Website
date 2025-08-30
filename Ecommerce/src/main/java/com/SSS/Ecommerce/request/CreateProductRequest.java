@@ -1,6 +1,7 @@
 package com.SSS.Ecommerce.request;
+import com.SSS.Ecommerce.model.Size;
 
-import org.hibernate.engine.jdbc.Size;
+//import org.hibernate.engine.jdbc.Size;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,7 +16,7 @@ public class CreateProductRequest {
 
     private int discountPercent;
 
-    private String quantity;
+    private int quantity;
 
     private String brand;
 
@@ -69,11 +70,11 @@ public class CreateProductRequest {
         this.discountPercent = discountPercent;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
@@ -132,4 +133,7 @@ public class CreateProductRequest {
     public void setThirdLevelCategory(String thirdLevelCategory) {
         this.thirdLevelCategory = thirdLevelCategory;
     }
+
+
+
 }
