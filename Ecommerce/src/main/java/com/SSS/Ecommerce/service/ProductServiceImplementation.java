@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 public class ProductServiceImplementation implements ProductService{
 
     private ProductRepository productRepository;
+
+    //CREATING USER SERVICE IMPLEMENTATION
     private UserService userService;
     private CategoryRepository categoryRepository;
 
@@ -47,7 +49,7 @@ public class ProductServiceImplementation implements ProductService{
             topLevel = categoryRepository.save(topLevelCategory);
         }
 
-        Category secondLevel = categoryRepository.findByNameAndParant(req.getSecondLevelCategory(), topLevel.getName());
+        Category secondLevel = categoryRepository.findByNameAndParent(req.getSecondLevelCategory(), topLevel.getName());
 
         if (secondLevel==null){
             Category secondLevelCategory = new Category();
@@ -57,7 +59,7 @@ public class ProductServiceImplementation implements ProductService{
             secondLevel = categoryRepository.save(secondLevelCategory);
         }
 
-        Category thirdLevel = categoryRepository.findByNameAndParant(req.getThirdLevelCategory(), secondLevel.getName());
+        Category thirdLevel = categoryRepository.findByNameAndParent(req.getThirdLevelCategory(), secondLevel.getName());
 
         if (thirdLevel==null){
             Category thirdLevelCategory = new Category();
@@ -71,11 +73,11 @@ public class ProductServiceImplementation implements ProductService{
         product.setTitle(req.getTitle());
         product.setColor(req.getColor());
         product.setDescription(req.getDescription());
-        product.setDiscountedPrice(new BigDecimal(req.getDiscountedPrice()));
-        product.setDiscountPresent(new BigDecimal(req.getDiscountPercent()));
+        product.setDiscountedPrice(req.getDiscountedPrice());
+        product.setDiscountPercent(req.getDiscountPercent());
         product.setImageUrl(req.getImageUrl());
         product.setBrand(req.getBrand());
-        product.setPrice(new BigDecimal(req.getPrice()));
+        product.setPrice(req.getPrice());
         product.setSizes(req.getSize());
         product.setQuantity(req.getQuantity());
         product.setCategory(thirdLevel);
@@ -130,7 +132,7 @@ public class ProductServiceImplementation implements ProductService{
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
 
-        List<Product> products = productRepository.filterProduct(category, minPrice, maxPrice, minDiscount, sort);
+        List<Product> products = productRepository.filterProducts(category, minPrice, maxPrice, minDiscount, sort);
 
         if(!colors.isEmpty()){
             products=products.stream().filter(p-> colors.stream().anyMatch(c->c.equalsIgnoreCase(p.getColor())))

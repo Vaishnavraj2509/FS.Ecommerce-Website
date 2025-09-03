@@ -22,13 +22,13 @@ public class Product {
     private String description;
 
     @Column(name = "price", precision = 10, scale = 2)
-    private BigDecimal price;
+    private int price;
 
-    @Column(name = "discounted_price", precision = 10, scale = 2)
-    private BigDecimal discountedPrice;
+    @Column(name = "discountedPrice", precision = 10, scale = 2)
+    private int discountedPrice;
 
-    @Column(name = "discount_percent", precision = 5, scale = 2)
-    private BigDecimal discountPresent;
+    @Column(name = "discountPercent", precision = 5, scale = 2)
+    private int discountPercent;
 
     @Column(name = "quantity")
     private int quantity;
@@ -64,13 +64,13 @@ public class Product {
 
     public Product() {}
 
-    public Product(Long id, String title, String description, BigDecimal price, BigDecimal discountedPrice, BigDecimal discountPresent, int quantity, String brand, String color, Set<Size> sizes, String imageUrl, List<Rating> ratings, List<Review> reviews, int numRatings, Category category, LocalDateTime createdAt) {
+    public Product(Long id, String title, String description, int price, int discountedPrice, BigDecimal discountPresent, int quantity, String brand, String color, Set<Size> sizes, String imageUrl, List<Rating> ratings, List<Review> reviews, int numRatings, Category category, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.price = price;
         this.discountedPrice = discountedPrice;
-        this.discountPresent = discountPresent;
+        this.discountPercent = discountPercent;
         this.quantity = quantity;
         this.brand = brand;
         this.color = color;
@@ -107,28 +107,28 @@ public class Product {
         this.description = description;
     }
 
-    public BigDecimal getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
-    public BigDecimal getDiscountedPrice() {
+    public int getDiscountedPrice() {
         return discountedPrice;
     }
 
-    public void setDiscountedPrice(BigDecimal discountedPrice) {
+    public void setDiscountedPrice(int discountedPrice) {
         this.discountedPrice = discountedPrice;
     }
 
-    public BigDecimal getDiscountPresent() {
-        return discountPresent;
+    public int getDiscountPercent() {
+        return discountPercent;
     }
 
-    public void setDiscountPresent(BigDecimal discountPresent) {
-        this.discountPresent = discountPresent;
+    public void setDiscountPercent(int discountPercent) {
+        this.discountPercent = discountPercent;
     }
 
     public int getQuantity() {
