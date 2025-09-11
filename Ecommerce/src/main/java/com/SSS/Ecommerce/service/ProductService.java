@@ -24,4 +24,5 @@ public interface ProductService {
                                        Integer minPrice, Integer maxPrice, Integer minDiscount,
                                        String sort, String stock, Integer pageNumber, Integer pageSize);
 
+   public List<Product> getAllProducts();
 }

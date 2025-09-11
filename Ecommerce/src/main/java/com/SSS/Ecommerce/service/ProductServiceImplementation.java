@@ -35,7 +35,10 @@ public class ProductServiceImplementation implements ProductService{
         this.categoryRepository=categoryRepository;
     }
 
-
+    @Override
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();   // ✅ implementation
+    }
 
     @Override
     public Product createProduct(CreateProductRequest req) {

@@ -26,9 +26,9 @@ public class CreateProductRequest {
 
     private String imageUrl;
 
-    private String topLevelCategory;
-    private String secondLevelCategory;
-    private String thirdLevelCategory;
+    private String topLevelCategory;//SHIRT OR T-SHIRT MEN ITEMS
+    private String secondLevelCategory;//CLOTHING
+    private String thirdLevelCategory;//MEN SHIRT
 
     public String getTitle() {
         return title;

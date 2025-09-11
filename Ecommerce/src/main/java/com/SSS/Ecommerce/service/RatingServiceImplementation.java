@@ -18,7 +18,7 @@ public class RatingServiceImplementation implements RatingService{
     private RatingRepository ratingRepository;
     private ProductService productService;
 
-    public RatingServiceImplementation(RatingService ratingService, ProductService productService){
+    public RatingServiceImplementation(RatingRepository ratingRepository, ProductService productService){
         this.ratingRepository = ratingRepository;
         this.productService = productService;
     }

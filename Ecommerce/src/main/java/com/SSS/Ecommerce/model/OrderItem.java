@@ -14,9 +14,11 @@ public class OrderItem {
 
     @JsonIgnore
     @ManyToOne
+    @JoinColumn(name = "order_id")
     private Order order;
 
     @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 
     private String size;
@@ -27,6 +29,7 @@ public class OrderItem {
 
     private Integer discountedPrice;
 
+    @Column(name = "user_id")
     private Long userId;
 
     private LocalDateTime deliveryDate;

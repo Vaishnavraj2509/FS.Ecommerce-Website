@@ -1,7 +1,9 @@
 package com.SSS.Ecommerce.controller;
 
+import com.SSS.Ecommerce.model.Cart;
 import com.SSS.Ecommerce.model.User;
 import com.SSS.Ecommerce.exception.UserException;
+import com.SSS.Ecommerce.service.CartService;
 import com.SSS.Ecommerce.service.CustomUserServiceImplementation;
 import com.SSS.Ecommerce.repository.UserRepo;
 import com.SSS.Ecommerce.request.LoginRequest;
@@ -21,19 +23,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserRepo userRepo;
-    private final JwtProvider jwtProvider;
-    private final PasswordEncoder passwordEncoder;
-    private final CustomUserServiceImplementation customUserService;
+    private UserRepo userRepo;
+    private JwtProvider jwtProvider;
+    private PasswordEncoder passwordEncoder;
+    private CustomUserServiceImplementation customUserService;
+    private CartService cartService;
 
     public AuthController(UserRepo userRepo,
                           CustomUserServiceImplementation customUserService,
                           PasswordEncoder passwordEncoder,
-                          JwtProvider jwtProvider) {
+                          JwtProvider jwtProvider, CartService cartService) {
         this.userRepo = userRepo;
         this.customUserService = customUserService;
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
+        this.cartService = cartService;
     }
 
     @PostMapping("/signup")
@@ -54,7 +58,8 @@ public class AuthController {
         createdUser.setFirstName(firstName);
         createdUser.setLastName(lastName);
 
-        User savedUser = userRepo.save(createdUser);    // DEBUG BREAKPOINT 3: After saving user
+        User savedUser = userRepo.save(createdUser);// DEBUG BREAKPOINT 3: After saving user
+        Cart cart = cartService.createCart(savedUser);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
