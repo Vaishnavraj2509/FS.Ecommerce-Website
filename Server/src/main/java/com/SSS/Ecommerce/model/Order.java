@@ -1,9 +1,7 @@
 package com.SSS.Ecommerce.model;
 
-import com.fasterxml.jackson.databind.EnumNamingStrategies;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +21,7 @@ public class Order {
     private User user;
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDateTime orderDate;

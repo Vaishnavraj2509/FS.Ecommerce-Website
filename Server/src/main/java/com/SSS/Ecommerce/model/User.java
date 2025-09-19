@@ -29,11 +29,13 @@ public class User {
     private String mobile;
 
     @OneToMany(mappedBy = "user",cascade=CascadeType.ALL)
+    @JsonIgnore
     private List<Address> address = new ArrayList<>();
 
     @Embedded
     @ElementCollection
     @CollectionTable(name = "payment_information", joinColumns = @JoinColumn(name = "user_id"))
+    @JsonIgnore
     private List<PaymentInformation> paymentInformation = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

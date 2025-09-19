@@ -1,7 +1,7 @@
 package com.SSS.Ecommerce.model;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -48,9 +48,11 @@ public class Product {
     private String imageUrl;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Rating> ratings = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Review> reviews = new ArrayList<>();
 
     @Column(name = "num_ratings")
@@ -64,7 +66,7 @@ public class Product {
 
     public Product() {}
 
-    public Product(Long id, String title, String description, int price, int discountedPrice, BigDecimal discountPresent, int quantity, String brand, String color, Set<Size> sizes, String imageUrl, List<Rating> ratings, List<Review> reviews, int numRatings, Category category, LocalDateTime createdAt) {
+    public Product(Long id, String title, String description, int price, int discountedPrice, int discountPercent, int quantity, String brand, String color, Set<Size> sizes, String imageUrl, List<Rating> ratings, List<Review> reviews, int numRatings, Category category, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -210,6 +212,4 @@ public class Product {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
-
 }

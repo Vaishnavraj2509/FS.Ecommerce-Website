@@ -9,6 +9,8 @@ import com.SSS.Ecommerce.repository.UserRepo;
 import com.SSS.Ecommerce.request.LoginRequest;
 import com.SSS.Ecommerce.response.AuthResponse;
 import com.SSS.Ecommerce.config.JwtProvider;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -41,7 +43,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user) throws UserException {
+    public ResponseEntity<AuthResponse> createUserHandler(@RequestBody User user, HttpServletResponse response) throws UserException {
         String email = user.getEmail();                 // DEBUG BREAKPOINT 1: Inspect incoming data
         String password = user.getPassword();
         String firstName = user.getFirstName();
@@ -65,6 +67,15 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtProvider.generateToken(authentication); // DEBUG BREAKPOINT 4: Inspect token generation
+        
+        // Set JWT token as HttpOnly cookie
+        Cookie jwtCookie = new Cookie("jwt", token);
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setSecure(false); // Set to true in production with HTTPS
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(24 * 60 * 60); // 24 hours
+        response.addCookie(jwtCookie);
+        
         AuthResponse authResponse = new AuthResponse();
         authResponse.setJwt(token);
         authResponse.setMessage("Signup Success");
@@ -73,7 +84,7 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<AuthResponse> loginUserHandler(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<AuthResponse> loginUserHandler(@RequestBody LoginRequest loginRequest, HttpServletResponse response) {
         String username = loginRequest.getEmail();  // DEBUG BREAKPOINT 6: Inspect login request email
         String password = loginRequest.getPassword(); // DEBUG BREAKPOINT 7: Inspect password
 
@@ -81,10 +92,37 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtProvider.generateToken(authentication); // DEBUG BREAKPOINT 9: Inspect token generation
+        
+        // Set JWT token as HttpOnly cookie
+        Cookie jwtCookie = new Cookie("jwt", token);
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setSecure(false); // Set to true in production with HTTPS
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(24 * 60 * 60); // 24 hours
+        response.addCookie(jwtCookie);
+        
         AuthResponse authResponse = new AuthResponse();
         authResponse.setJwt(token);
         authResponse.setMessage("Signin Success");
         return new ResponseEntity<>(authResponse, HttpStatus.CREATED); // DEBUG BREAKPOINT 10: Inspect final response
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<AuthResponse> logoutHandler(HttpServletResponse response) {
+        // Clear the JWT cookie
+        Cookie jwtCookie = new Cookie("jwt", null);
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setSecure(false); // Set to true in production with HTTPS
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(0); // Delete the cookie
+        response.addCookie(jwtCookie);
+        
+        // Clear security context
+        SecurityContextHolder.clearContext();
+        
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setMessage("Logout Success");
+        return new ResponseEntity<>(authResponse, HttpStatus.OK);
     }
 
     private Authentication authenticate(String username, String password) {

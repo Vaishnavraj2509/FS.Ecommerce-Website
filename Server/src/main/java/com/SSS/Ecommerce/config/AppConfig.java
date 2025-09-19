@@ -4,8 +4,7 @@ import com.SSS.Ecommerce.service.CustomUserServiceImplementation;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.lang.NonNull;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -24,9 +24,11 @@ import java.util.Collections;
 public class AppConfig {
 
     private final CustomUserServiceImplementation userService;
+    private final JwtValidator jwtValidator;
 
-    public AppConfig(CustomUserServiceImplementation userService) {
+    public AppConfig(CustomUserServiceImplementation userService, JwtValidator jwtValidator) {
         this.userService = userService;
+        this.jwtValidator = jwtValidator;
     }
 
     @Bean
@@ -36,15 +38,15 @@ public class AppConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 )
-                // remove addFilterBefore(null, null) unless you have a real custom filter
-                //.addFilterBefore(null, null)
+                .addFilterBefore(jwtValidator, BasicAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(new CorsConfigurationSource() {
                     @Override
-                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                    public CorsConfiguration getCorsConfiguration(@NonNull HttpServletRequest request) {
                         CorsConfiguration configuration = new CorsConfiguration();
                         configuration.setAllowedOrigins(Arrays.asList(
                                 "http://localhost:3000",

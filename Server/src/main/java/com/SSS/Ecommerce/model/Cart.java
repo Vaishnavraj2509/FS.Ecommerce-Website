@@ -1,9 +1,7 @@
 package com.SSS.Ecommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import org.springframework.boot.autoconfigure.web.WebProperties;
-
-import javax.crypto.SecretKey;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +17,7 @@ public class Cart {
     private User user;
 
 @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+@JsonIgnore
     @Column(name="cart_items")
     private Set<CartItem> cartItems = new HashSet<>();
 
